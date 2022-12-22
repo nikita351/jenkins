@@ -10,13 +10,13 @@ pipeline {
                 checkout scm
             }
         }
-    stage('Building image') {
-      steps{
-        script {
-          dockerImage = docker.build imagename
+        stage('Building image') {
+            steps{
+                script {
+                dockerImage = docker.build imagename
+                }
+            }
         }
-      }
-    }
     }
     post { 
         always { 
