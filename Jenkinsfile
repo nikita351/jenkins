@@ -1,6 +1,8 @@
 pipeline {
     environment {
-        imagename = "nginx"
+        registry = "nikita351/final_project" 
+        registryCredential = 'nikita351' 
+        dockerImage = ''
     }
     agent any
     stages { 
@@ -10,13 +12,22 @@ pipeline {
                 checkout scm
             }
         }
-        stage('Building image') {
-            steps{
-                script {
-                dockerImage = docker.build imagename
+        stage('Building image') { 
+            steps { 
+                script { 
+                    dockerImage = docker.build registry + ":$BUILD_NUMBER" 
                 }
-            }
+            } 
         }
+        stage('Push image') { 
+            steps { 
+                script { 
+                    docker.withRegistry( '', registryCredential ) { 
+                        dockerImage.push() 
+                    }
+                } 
+            }
+        }  
     }
     post { 
         always { 
