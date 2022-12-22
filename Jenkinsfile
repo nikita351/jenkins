@@ -1,4 +1,7 @@
-pipeline { 
+pipeline {
+    environment {
+        imagename = "nginx"
+    }
     agent any
     stages { 
         stage('Clone SCM') { 
@@ -7,13 +10,13 @@ pipeline {
                 checkout scm
             }
         }
-        stage('Building image') { 
-            steps { 
-                script { 
-                    dockerImage = docker.build registry + ":$BUILD_NUMBER" 
-                }
-            } 
+    stage('Building image') {
+      steps{
+        script {
+          dockerImage = docker.build imagename
         }
+      }
+    }
     }
     post { 
         always { 
