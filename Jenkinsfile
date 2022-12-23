@@ -27,7 +27,14 @@ pipeline {
                     }
                 } 
             }
-        }  
+        }
+        stage('Save image') {
+            steps {
+                script {
+                    sh "docker image save $registry:$BUILD_NUMBER -o $registry:latest"
+                }
+            }
+        }
     }
     post { 
         always { 
