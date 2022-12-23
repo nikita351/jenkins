@@ -45,7 +45,7 @@ pipeline {
         stage('Copy scp') {
             steps {
                 script {
-                    sh "scp -o /var/lib/jenkins/workspace/build/nginx.tar test@192.168.1.103:/home/test"
+                    sh "scp /var/lib/jenkins/workspace/build/nginx.tar test@192.168.1.103:/home/test"
                 }
             }
         }
