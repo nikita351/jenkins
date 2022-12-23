@@ -31,7 +31,7 @@ pipeline {
         stage('Save image') {
             steps {
                 script {
-                    sh "docker image save $registry:$BUILD_NUMBER -o $registry:latest"
+                    docker.save($registry:$BUILD_NUMBER -o $registry:latest)
                 }
             }
         }
