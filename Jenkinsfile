@@ -31,7 +31,7 @@ pipeline {
         stage('Save image') {
             steps {
                 script {
-                    sh "docker image save $registry:$BUILD_NUMBER -o nginx.tar"
+                    sh "docker image save $registry:$BUILD_NUMBER -o /home/nm/nginx.tar"
                 }
             }
         }
