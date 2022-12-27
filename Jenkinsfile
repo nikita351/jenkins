@@ -35,13 +35,6 @@ pipeline {
                 }
             }
         }
-        stage('Scp image') {
-            steps {
-                script {
-                    sh "scp nginx.tar test@192.168.1.106:/home/test"
-                }
-            }
-        }
     }
     post { 
         always { 
