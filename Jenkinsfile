@@ -4,7 +4,7 @@ pipeline {
         registryCredential = 'nikita351' 
         dockerImage = ''
     }
-    agent {label 'docker'}
+    agent any
     stages { 
         stage('Clone SCM') { 
             steps { 
