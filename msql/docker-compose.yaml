@@ -1,7 +1,5 @@
 version: '3.9'
 services:
-  web:
-    image: nginx
   db:
     image: mysql
     ports:
