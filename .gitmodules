@@ -1,0 +1,3 @@
+[submodule "nginx-test"]
+	path = nginx-test
+	url = git@github.com:nikita351/nginx-test.git
