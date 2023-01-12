@@ -31,18 +31,22 @@ pipeline {
         stage('Docker compose up mysql') { 
             steps { 
                 script {
-                    sh 'cd mysql'
-                    sh 'docker compose up -d'
-                    sh 'cd ..'
+                    sh '''
+                        cd mysql
+                        docker compose up -d
+                        cd ..
+                    '''
                 } 
             }
         }
         stage('Docker compose up nginx') { 
             steps { 
                 script {
-                    sh 'cd nginx'
-                    sh 'docker-compose up -d'
-                    sh 'cd ..'
+                    sh '''
+                        cd nginx
+                        docker compose up -d
+                        cd ..
+                    '''
                 } 
             }
         }
