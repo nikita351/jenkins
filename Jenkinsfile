@@ -10,7 +10,7 @@ pipeline {
             steps { 
                 cleanWs()
                 checkout scm
-                sh 'git submodule init && git submodule update --recursive'
+                sh 'git submodule init && git submodule update --recursive && git submodule update --remote'
             }
         }
         // stage('Building image') { 
