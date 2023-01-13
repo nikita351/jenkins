@@ -1,6 +1,8 @@
 [submodule "nginx-test"]
 	path = nginx-test
 	url = git@github.com:nikita351/nginx-test.git
+	branch = main
 [submodule "mysql-test"]
 	path = mysql-test
 	url = git@github.com:nikita351/mysql-test.git
+	branch = main
