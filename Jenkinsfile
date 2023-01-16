@@ -36,7 +36,7 @@ pipeline {
                         ls -la
                         cd mysql-test
                         ls -la
-                        docker compose up -d
+                        docker compose build + ":$BUILD_NUMBER"
                         cd ..
                         ls -la
                     '''
@@ -50,7 +50,7 @@ pipeline {
                         ls -la
                         cd nginx-test
                         ls -la
-                        docker compose up -d
+                        docker compose duild + ":$BUILD_NUMBER"
                         cd ..
                         ls -la
                     '''
