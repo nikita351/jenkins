@@ -34,7 +34,7 @@ pipeline {
                 script {
                     sh '''
                         cd mysql-test
-                        docker compose --project-name app + ":$BUILD_NUMBER" build 
+                        docker compose --project-name app + :$BUILD_NUMBER build 
                         cd ..
                     '''
                 } 
@@ -45,7 +45,7 @@ pipeline {
                 script {
                     sh '''
                         cd nginx-test
-                        docker compose --project-name app_1 + ":$BUILD_NUMBER" build
+                        docker compose --project-name app_1 + :$BUILD_NUMBER build
                         cd ..
                     '''
                 } 
