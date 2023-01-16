@@ -34,10 +34,8 @@ pipeline {
             steps { 
                 script {
                     sh '''
-                        cd mysql-test
                         docker compose up -d
                         docker images
-                        cd ..
                     '''
                 } 
             }
