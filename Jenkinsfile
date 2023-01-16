@@ -34,7 +34,7 @@ pipeline {
             steps { 
                 script {
                     sh '''
-                        docker compose up -d
+                        docker compose build --build-arg BUILD_TAG=${git_hash}
                         docker images
                     '''
                 } 
