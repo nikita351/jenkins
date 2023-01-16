@@ -35,7 +35,7 @@ pipeline {
                 script {
                     sh '''
                         cd mysql-test
-                        docker compose build --build-arg BUILD_TAG=${git_hash}
+                        docker compose up -d
                         docker images
                         cd ..
                     '''
