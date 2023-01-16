@@ -3,6 +3,7 @@ pipeline {
         registry = "nikita351/final_project" 
         registryCredential = 'nikita351' 
         dockerImage = ''
+        hash = 'git rev-parse HEAD'
     }
     agent {label 'docker'}
     stages { 
@@ -13,13 +14,13 @@ pipeline {
                 sh 'git submodule init && git submodule update --recursive && git submodule update --remote'
             }
         }
-        // stage('Building image') { 
-        //     steps { 
-        //         script { 
-        //             dockerImage = docker.build registry + ":$BUILD_NUMBER" 
-        //         }
-        //     } 
-        // }
+        stage('Building image') { 
+            steps { 
+                script { 
+                    dockerImage = docker.build registry + ":$hash" 
+                }
+            } 
+        }
         // stage('Push image') { 
         //     steps { 
         //         script { 
@@ -29,28 +30,28 @@ pipeline {
         //         } 
         //     }
         // }
-        stage('Docker compose up mysql') { 
-            steps { 
-                script {
-                    sh '''
-                        cd mysql-test
-                        docker compose build 
-                        cd ..
-                    '''
-                } 
-            }
-        }
-        stage('Docker compose up nginx') { 
-            steps { 
-                script {
-                    sh '''
-                        cd nginx-test
-                        docker compose build
-                        cd ..
-                    '''
-                } 
-            }
-        }
+        // stage('Docker compose up mysql') { 
+        //     steps { 
+        //         script {
+        //             sh '''
+        //                 cd mysql-test
+        //                 docker compose up -d
+        //                 cd ..
+        //             '''
+        //         } 
+        //     }
+        // }
+        // stage('Docker compose up nginx') { 
+        //     steps { 
+        //         script {
+        //             sh '''
+        //                 cd nginx-test
+        //                 docker compose up -d
+        //                 cd ..
+        //             '''
+        //         } 
+        //     }
+        // }
     }
     post { 
         always { 
