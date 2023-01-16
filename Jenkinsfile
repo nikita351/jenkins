@@ -11,7 +11,7 @@ pipeline {
             steps { 
                 cleanWs()
                 checkout scm
-                sh 'git submodule init && git submodule update --recursive && git submodule update --remote'
+                // sh 'git submodule init && git submodule update --recursive && git submodule update --remote'
             }
         }
         // stage('Building image') { 
@@ -34,7 +34,7 @@ pipeline {
             steps { 
                 script {
                     sh '''
-                        docker compose build --build-arg BUILD_TAG=${git_hash}
+                        docker compose build --build-arg BUILD_TAG=kuku
                         docker images
                     '''
                 } 
