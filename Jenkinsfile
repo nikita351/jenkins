@@ -14,13 +14,13 @@ pipeline {
                 sh 'git submodule init && git submodule update --recursive && git submodule update --remote'
             }
         }
-        stage('Building image') { 
-            steps { 
-                script { 
-                    dockerImage = docker.build registry + ":git_hash" 
-                }
-            } 
-        }
+        // stage('Building image') { 
+        //     steps { 
+        //         script { 
+        //             dockerImage = docker.build registry + ":$git_hash" 
+        //         }
+        //     } 
+        // }
         // stage('Push image') { 
         //     steps { 
         //         script { 
@@ -30,17 +30,18 @@ pipeline {
         //         } 
         //     }
         // }
-        // stage('Docker compose up mysql') { 
-        //     steps { 
-        //         script {
-        //             sh '''
-        //                 cd mysql-test
-        //                 docker compose up -d
-        //                 cd ..
-        //             '''
-        //         } 
-        //     }
-        // }
+        stage('Docker compose up mysql') { 
+            steps { 
+                script {
+                    sh '''
+                        cd mysql-test
+                        docker compose build --build-arg BUILD_TAG=${git_hash}
+                        docker images
+                        cd ..
+                    '''
+                } 
+            }
+        }
         // stage('Docker compose up nginx') { 
         //     steps { 
         //         script {
