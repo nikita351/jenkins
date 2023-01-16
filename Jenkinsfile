@@ -3,7 +3,6 @@ pipeline {
         registry = "nikita351/final_project" 
         registryCredential = 'nikita351' 
         dockerImage = ''
-        hash = 'git rev-parse HEAD'
     }
     agent {label 'docker'}
     stages { 
@@ -17,7 +16,7 @@ pipeline {
         stage('Building image') { 
             steps { 
                 script { 
-                    dockerImage = docker.build registry + ":$hash" 
+                    dockerImage = docker.build registry + ":${GIT_COMMIT,length=8}" 
                 }
             } 
         }
