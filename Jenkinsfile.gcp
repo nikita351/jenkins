@@ -1,5 +1,8 @@
 pipeline {
     agent any
+    environment {
+        CLOUDSDK_CORE_PROJECT='neat-geode-237514'
+    }
     stages { 
         stage('Clone SCM') { 
             steps { 
@@ -8,14 +11,16 @@ pipeline {
                 // sh 'git submodule init && git submodule update --recursive && git submodule update --remote'
             }
         }
-        stage('test') { 
-            steps { 
-                script { 
-                    sh '''
-                        gcloud version
-                    ''' 
-                }
-            } 
+        stage('test') {
+          steps {
+            withCredentials([file(credentialsId: 'gcloud-service-account-jenkins', variable: 'GCLOUD_CREDS')]) {
+              sh '''
+                gcloud version
+                gcloud auth activate-service-account --key-file="$GCLOUD_CREDS"
+                gcloud compute zones list
+              '''
+            }
+          }
         }
     }
     post { 
