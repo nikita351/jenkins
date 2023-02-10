@@ -1,7 +1,11 @@
 pipeline {
     agent any
     environment {
-        CLOUDSDK_CORE_PROJECT='neat-geode-237514'
+        CLOUDSDK_CORE_PROJECT = 'neat-geode-237514'
+        PROJECT_ID = 'neat-geode-237514'
+        CLUSTER_NAME = 'dev-neat-geode-237514-gke'
+        LOCATION = 'us-central1-a'
+        CREDENTIALS_ID = 'gcloud-service-account-jenkins'
     }
     stages { 
         stage('Clone SCM') { 
@@ -21,6 +25,11 @@ pipeline {
               '''
             }
           }
+        }
+        stage('Deploy to GKE') {
+            steps{
+                step([$class: 'KubernetesEngineBuilder', projectId: env.PROJECT_ID, clusterName: env.CLUSTER_NAME, location: env.LOCATION, manifestPattern: 'deployment.yaml', credentialsId: env.CREDENTIALS_ID, verifyDeployments: true])
+            }
         }
     }
     post { 
