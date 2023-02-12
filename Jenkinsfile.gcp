@@ -2,7 +2,6 @@
 pipeline {
     agent any
     environment {
-        CLOUDSDK_CORE_PROJECT = 'neat-geode-237514'
         PROJECT_ID            = 'neat-geode-237514'
         CLUSTER_NAME          = 'dev-neat-geode-237514-gke'
         LOCATION              = 'us-central1-a'
@@ -17,7 +16,6 @@ pipeline {
             steps {
                 cleanWs()
                 checkout scm
-            // sh 'git submodule init && git submodule update --recursive && git submodule update --remote'
             }
         }
         stage('Building image') {
@@ -33,17 +31,6 @@ pipeline {
                     docker.withRegistry('', REGISTRY_CREDENTIAL) {
                         DOCKER_IMAGE.push()
                     }
-                }
-            }
-        }
-        stage('test') {
-            steps {
-                withCredentials([file(credentialsId: 'gcloud-service-account-jenkins', variable: 'GCLOUD_CREDS')]) {
-                sh '''
-                    gcloud version
-                    gcloud auth activate-service-account --key-file="$GCLOUD_CREDS"
-                    gcloud compute zones list
-                '''
                 }
             }
         }
