@@ -1,53 +1,56 @@
+/* groovylint-disable CompileStatic */
 pipeline {
     agent any
     environment {
         CLOUDSDK_CORE_PROJECT = 'neat-geode-237514'
-        PROJECT_ID = 'neat-geode-237514'
-        CLUSTER_NAME = 'dev-neat-geode-237514-gke'
-        LOCATION = 'us-central1-a'
-        CREDENTIALS_ID = 'My Project 29833'
-        REGISTRY = "nikita351/final_project" 
-        REGISTRY_CREDENTIAL = 'nikita351' 
-        DOCKER_IMAGE = ''
-        GIT_HASH = GIT_COMMIT.take(8)
+        /* groovylint-disable-next-line DuplicateStringLiteral */
+        PROJECT_ID            = 'neat-geode-237514'
+        CLUSTER_NAME          = 'dev-neat-geode-237514-gke'
+        LOCATION              = 'us-central1-a'
+        CREDENTIALS_ID        = 'My Project 29833'
+        REGISTRY              = 'nikita351/final_project'
+        REGISTRY_CREDENTIAL   = 'nikita351'
+        DOCKER_IMAGE          = ''
+        GIT_HASH              = GIT_COMMIT.take(8)
     }
-    stages { 
-        stage('Clone SCM') { 
-            steps { 
+    stages {
+        stage('Clone SCM') {
+            steps {
                 cleanWs()
                 checkout scm
-                // sh 'git submodule init && git submodule update --recursive && git submodule update --remote'
+            // sh 'git submodule init && git submodule update --recursive && git submodule update --remote'
             }
         }
-        stage('Building image') { 
-            steps { 
-                script { 
-                    dockerImage = docker.build REGISTRY + ":$GIT_HASH" 
+        stage('Building image') {
+            steps {
+                script {
+                    dockerImage = docker.build REGISTRY + ":$GIT_HASH"
                 }
-            } 
+            }
         }
-        stage('Push image') { 
-            steps { 
-                script { 
-                    docker.withRegistry( '', REGISTRY_CREDENTIAL ) { 
-                        DOCKER_IMAGE.push() 
+        stage('Push image') {
+            steps {
+                script {
+                    /* groovylint-disable-next-line NestedBlockDepth */
+                    docker.withRegistry('', REGISTRY_CREDENTIAL) {
+                        DOCKER_IMAGE.push()
                     }
-                } 
+                }
             }
         }
         stage('test') {
-          steps {
-            withCredentials([file(credentialsId: 'gcloud-service-account-jenkins', variable: 'GCLOUD_CREDS')]) {
-              sh '''
+            steps {
+                withCredentials([file(credentialsId: 'gcloud-service-account-jenkins', variable: 'GCLOUD_CREDS')]) {
+                    sh '''
                 gcloud version
                 gcloud auth activate-service-account --key-file="$GCLOUD_CREDS"
                 gcloud compute zones list
               '''
+                }
             }
-          }
         }
         stage('Deploy to GKE') {
-            steps{
+            steps {
                 step([
                 $class: 'KubernetesEngineBuilder',
                 projectId: env.PROJECT_ID,
@@ -59,9 +62,9 @@ pipeline {
             }
         }
     }
-    post { 
-        always { 
+    post {
+        always {
             cleanWs()
         }
-    }    
+    }
 }
