@@ -39,16 +39,17 @@ pipeline {
         stage('test') {
             steps {
                 withCredentials([file(credentialsId: 'gcloud-service-account-jenkins', variable: 'GCLOUD_CREDS')]) {
-                    sh '''
-                gcloud version
-                gcloud auth activate-service-account --key-file="$GCLOUD_CREDS"
-                gcloud compute zones list
-              '''
+                sh '''
+                    gcloud version
+                    gcloud auth activate-service-account --key-file="$GCLOUD_CREDS"
+                    gcloud compute zones list
+                '''
                 }
             }
         }
         stage('Deploy to GKE') {
             steps {
+                sh ("sed -i 's/final_project:latest/final_project:${env.GIT_HASH}/g' deployment.yaml")
                 step([
                 $class: 'KubernetesEngineBuilder',
                 projectId: env.PROJECT_ID,

@@ -6,7 +6,7 @@ metadata:
     app: nginx-demo
 spec:
   containers:
-  - image: nginx:latest
+  - image: nikita351/final_project:latest
     name: nginx-demo
     ports:
     -  containerPort: 80
