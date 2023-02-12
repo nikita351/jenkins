@@ -3,7 +3,6 @@ pipeline {
     agent any
     environment {
         CLOUDSDK_CORE_PROJECT = 'neat-geode-237514'
-        /* groovylint-disable-next-line DuplicateStringLiteral */
         PROJECT_ID            = 'neat-geode-237514'
         CLUSTER_NAME          = 'dev-neat-geode-237514-gke'
         LOCATION              = 'us-central1-a'
@@ -24,14 +23,13 @@ pipeline {
         stage('Building image') {
             steps {
                 script {
-                    dockerImage = docker.build REGISTRY + ":$GIT_HASH"
+                    DOCKER_IMAGE = docker.build REGISTRY + ":$GIT_HASH"
                 }
             }
         }
         stage('Push image') {
             steps {
                 script {
-                    /* groovylint-disable-next-line NestedBlockDepth */
                     docker.withRegistry('', REGISTRY_CREDENTIAL) {
                         DOCKER_IMAGE.push()
                     }
