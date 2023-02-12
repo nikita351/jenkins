@@ -6,10 +6,10 @@ pipeline {
         CLUSTER_NAME = 'dev-neat-geode-237514-gke'
         LOCATION = 'us-central1-a'
         CREDENTIALS_ID = 'My Project 29833'
-        registry = "nikita351/final_project" 
-        registryCredential = 'nikita351' 
-        dockerImage = ''
-        git_hash = GIT_COMMIT.take(8)
+        REGISTRY = "nikita351/final_project" 
+        REGISTRY_CREDENTIAL = 'nikita351' 
+        DOCKER_IMAGE = ''
+        GIT_HASH = GIT_COMMIT.take(8)
     }
     stages { 
         stage('Clone SCM') { 
@@ -22,15 +22,15 @@ pipeline {
         stage('Building image') { 
             steps { 
                 script { 
-                    dockerImage = docker.build registry + ":$git_hash" 
+                    dockerImage = docker.build REGISTRY + ":$GIT_HASH" 
                 }
             } 
         }
         stage('Push image') { 
             steps { 
                 script { 
-                    docker.withRegistry( '', registryCredential ) { 
-                        dockerImage.push() 
+                    docker.withRegistry( '', REGISTRY_CREDENTIAL ) { 
+                        DOCKER_IMAGE.push() 
                     }
                 } 
             }
